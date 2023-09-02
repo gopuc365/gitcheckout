@@ -1,0 +1,28 @@
+pipeline {
+    agent { label "any" }
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        
+    }
+    
+    stages {
+        stage('Get Directory'){
+            steps{
+                println(WORKSPACE)
+            }
+        }
+        stage('Hello') {
+            steps {
+                // withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'awscred', secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
+                sh '''
+                aws --version
+                java --version
+                jenkins --version
+                docker --version
+                terraform --version
+                '''
+            }
+        }
+    }
+}
